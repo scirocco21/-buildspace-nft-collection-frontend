@@ -1,5 +1,7 @@
 
-import React, { useEffect } from "react";
+
+
+import React, { useEffect, useState } from "react";
 import './styles/App.css';
 import twitterLogo from './assets/twitter-logo.svg';
 // Constants
@@ -9,8 +11,10 @@ const OPENSEA_LINK = '';
 const TOTAL_MINT_COUNT = 50;
 
 const App = () => {
+  // keep track if user is logged in on App level
+  const [currentAccount, setCurrentAccount] = useState("");
 
-  const checkIfWalletIsConnected = () => {
+  const checkIfWalletIsConnected = async () => {
     /*
     * First make sure we have access to window.ethereum
     */
@@ -22,7 +26,23 @@ const App = () => {
     } else {
       console.log("We have the ethereum object", ethereum);
     }
+    /*
+    * Check if we're authorized to access the user's wallet
+    */
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
+
+    /*
+    * User can have multiple authorized accounts, we grab the first one if its there!
+    */
+    if (accounts.length !== 0) {
+      const account = accounts[0];
+      console.log("Found an authorized account:", account);
+      setCurrentAccount(account)
+    } else {
+      console.log("No authorized account found")
+    }
   }
+  
 
   // Render Methods
   const renderNotConnectedContainer = () => (
