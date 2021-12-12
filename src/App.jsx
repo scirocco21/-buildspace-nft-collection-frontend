@@ -66,7 +66,9 @@ const App = () => {
           <p className="sub-text">
             Each unique. Each beautiful. Discover your NFT today.
           </p>
-          {renderNotConnectedContainer()}
+          {currentAccount === "" &&
+            renderNotConnectedContainer()
+          }
         </div>
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
