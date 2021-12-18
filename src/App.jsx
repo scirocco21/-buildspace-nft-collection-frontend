@@ -3,15 +3,18 @@ import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import './styles/App.css';
 import twitterLogo from './assets/twitter-logo.svg';
+// import raribleLogo from './assets/rarible-logo.svg'
 // Constants
 const TWITTER_HANDLE = 'sg43849488';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
-const OPENSEA_LINK = '';
-const CONTRACT_ADDRESS = '0x1f80cB53E7408eAEa2db66CBed852c8DD58b392a';
+const CONTRACT_ADDRESS = '0xb5C48Dc8ecd5434e094823F11d1c3b2ea4AC40FA';
+const MAX_MINT = 50;
+// const COLLECTION_LINK = 'https://rinkeby.rarible.com/collection/0xb5c48dc8ecd5434e094823f11d1c3b2ea4ac40fa';
 
 const App = () => {
   // keep track if user is logged in on App level
   const [currentAccount, setCurrentAccount] = useState("");
+  const [totalMinted, setTotalMinted] = useState(0);
 
   const checkIfWalletIsConnected = async () => {
     /*
@@ -46,13 +49,13 @@ const App = () => {
       setCurrentAccount(account);
       // Setup listener! This is for the case where a user comes to our site
       // and ALREADY had their wallet connected + authorized.
-      setupEventListener()
+      // setupEventListener();
+      getTotalNFTsMintedSoFar();
     } else {
       console.log("No authorized account found")
     }
   }
   
-
   /*
   * Implement your connectWallet method here
   */
@@ -82,7 +85,7 @@ const App = () => {
       setCurrentAccount(accounts[0]); 
       // Setup listener! This is for the case where a user comes to our site
       // and connected their wallet for the first time.
-      setupEventListener();
+      getTotalNFTsMintedSoFar();
     } catch (error) {
       console.log(error)
     }
@@ -94,10 +97,11 @@ const askContractToMintNft = async () => {
     const { ethereum } = window;
 
     if (ethereum) {
+      setupEventListener();
+
       const provider = new ethers.providers.Web3Provider(ethereum);
       const signer = provider.getSigner();
-      const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, myEpicNft.abi, signer);
-
+      const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, myEpicNft.abi, signer);      
       console.log("Going to pop wallet now to pay gas...")
       let nftTxn = await connectedContract.makeAnEpicNFT();
 
@@ -113,7 +117,6 @@ const askContractToMintNft = async () => {
     console.log(error)
   }
 }
-
 
   // Setup our listener.
   const setupEventListener = async () => {
@@ -152,6 +155,30 @@ const renderNotConnectedContainer = () => (
   </button>
 );
 
+const getTotalNFTsMintedSoFar  = async () => {
+    try {
+      const { ethereum } = window;
+
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          myEpicNft.abi,
+          signer
+        );
+
+        let totalMinted = await connectedContract.getTotalMinted();
+        console.log(`Total NFTs Minted: ${totalMinted}`)
+        setTotalMinted(totalMinted.toNumber())      
+        } else {
+        console.log("Ethereum object doesn't exist!");
+      } 
+    } catch (error) {
+      console.log(error);
+  }
+}
+
 /*
 * This runs our function when the page loads.
 */
@@ -175,6 +202,9 @@ useEffect(() => {
           </button>
           }
         </div>
+        { currentAccount &&
+        <p className="gradient-text"><i>{totalMinted} out of {MAX_MINT} NFTs minted</i></p>
+        }
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
           <a
