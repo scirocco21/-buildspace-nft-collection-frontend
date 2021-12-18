@@ -201,9 +201,11 @@ useEffect(() => {
           </button>
           }
         </div>
-        { currentAccount &&
-        <p className="gradient-text"><i>{totalMinted} out of {MAX_MINT} NFTs minted</i></p>
-        }
+        <div className="mint-counter">
+          { currentAccount &&
+          <p className="gradient-text"><i>{totalMinted} out of {MAX_MINT} NFTs minted</i></p>
+          }
+        </div>
          <div className="collection-container">
             <a
               className="footer-text"

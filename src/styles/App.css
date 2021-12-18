@@ -35,6 +35,16 @@
   -webkit-text-fill-color: transparent;
 }
 
+.mint-counter {
+  border-style: outset;
+  border-color: #35aee2;
+  border-width: 2px;
+  width: 80px;
+  margin: 50px auto 20px auto;
+  border-radius: 5px;
+
+}
+
 .cta-button {
   height: 45px;
   border: 0;
