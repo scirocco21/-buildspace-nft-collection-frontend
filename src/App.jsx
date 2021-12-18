@@ -3,13 +3,12 @@ import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import './styles/App.css';
 import twitterLogo from './assets/twitter-logo.svg';
-// import raribleLogo from './assets/rarible-logo.svg'
 // Constants
 const TWITTER_HANDLE = 'sg43849488';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const CONTRACT_ADDRESS = '0xb5C48Dc8ecd5434e094823F11d1c3b2ea4AC40FA';
 const MAX_MINT = 50;
-// const COLLECTION_LINK = 'https://rinkeby.rarible.com/collection/0xb5c48dc8ecd5434e094823f11d1c3b2ea4ac40fa';
+const COLLECTION_LINK = 'https://rinkeby.rarible.com/collection/0xb5c48dc8ecd5434e094823f11d1c3b2ea4ac40fa';
 
 const App = () => {
   // keep track if user is logged in on App level
@@ -205,14 +204,22 @@ useEffect(() => {
         { currentAccount &&
         <p className="gradient-text"><i>{totalMinted} out of {MAX_MINT} NFTs minted</i></p>
         }
+         <div className="collection-container">
+            <a
+              className="footer-text"
+              href={COLLECTION_LINK}
+              target="_blank"
+              rel="noreferrer"
+            >Check out the collection on Rarible</a>
+          </div>
         <div className="footer-container">
-          <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
-          <a
-            className="footer-text"
-            href={TWITTER_LINK}
-            target="_blank"
-            rel="noreferrer"
-          >{`follow me @${TWITTER_HANDLE}`}</a>
+            <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
+            <a
+              className="footer-text"
+              href={TWITTER_LINK}
+              target="_blank"
+              rel="noreferrer"
+            >{`follow me @${TWITTER_HANDLE}`}</a>
         </div>
       </div>
     </div>

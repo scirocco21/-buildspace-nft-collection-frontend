@@ -61,21 +61,16 @@
   margin-right: 15px;
 }
 
-.opensea-button {
-  background-color: rgb(32, 129, 226);
-}
-
-.mint-count {
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-}
-
 .footer-container {
   display: flex;
   justify-content: center;
   align-items: center;
   padding-bottom: 30px;
+}
+
+.collection-container {
+  color: white;
+  margin-bottom: 50px;
 }
 
 .twitter-logo {
